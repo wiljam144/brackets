@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-    input := "(add 2 2)"
+    input := "(tail (list 1 2 3))"
     l := lexer.New(input)
     p := parser.New(l)
     ast := p.ConstructAst()

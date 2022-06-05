@@ -1,17 +1,16 @@
 package evaluator
 
-import (
-	"brackets/ast"
-	"fmt"
-)
+import "brackets/ast"
+
+type Environment map[string]ast.Node
 
 type Evaluator struct {
     program ast.Program
-    env map[string]ast.Node
+    env Environment
 }
 
 func New(prog ast.Program) Evaluator {
-    var environment = make(map[string]ast.Node)
+    var environment = make(Environment)
     return Evaluator{program: prog, env: environment}
 }
 
@@ -25,11 +24,11 @@ func (e *Evaluator) EvaluateProgram() []ast.Node {
     return results
 }
 
-func evaluateSexpr(expr ast.Sexpr, env *map[string]ast.Node) ast.Node {
-    builtin := GetBuiltin(expr.Operator)
+func evaluateSexpr(expr ast.Sexpr, env *Environment) ast.Node {
+    builtin := getBuiltin(expr.Operator)
 
     if builtin == nil {
-        fmt.Printf("not a builtin")
+        // get function from env
     }
 
     return builtin(expr.Arguments, env)

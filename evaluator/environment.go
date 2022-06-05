@@ -2,13 +2,9 @@ package evaluator
 
 import "brackets/ast"
 
-func getFromEnvironment(ident ast.Identifier, env *map[string]ast.Node) ast.Node {
-    return (*env)[ident.Literal]
-}
-
-func getValueNumber(node ast.Node, env *map[string]ast.Node) float64 {
+func getValueNumber(node ast.Node, env *Environment) float64 {
     if t, ok := node.(ast.Identifier); ok {
-        return getValueNumber(getFromEnvironment(t, env), env)
+        return getValueNumber((*env)[t.Literal], env)
     }
     if t, ok := node.(ast.Number); ok {
         return t.Value
