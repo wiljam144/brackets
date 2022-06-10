@@ -14,6 +14,14 @@ func New(prog ast.Program) Evaluator {
     return Evaluator{program: prog, env: environment}
 }
 
+func NewWithEnv(prog ast.Program, env Environment) Evaluator {
+    return Evaluator{program: prog, env: env}
+}
+
+func (e *Evaluator) GetEnv() Environment {
+    return e.env
+}
+
 func (e *Evaluator) EvaluateProgram() []ast.Node {
     results := []ast.Node{}
 

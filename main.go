@@ -7,9 +7,14 @@ import (
     "brackets/parser"
     "brackets/lexer"
     "brackets/evaluator"
+    "brackets/repl"
 )
 
 func main() {
+    if os.Args[1] == "repl" {
+        repl.Repl()
+    }
+
     file := os.Args[1]
 
     content, err := ioutil.ReadFile(file)
