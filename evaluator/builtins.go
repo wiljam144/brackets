@@ -9,6 +9,9 @@ func getBuiltin(operator string) func([]ast.Node, *Environment) ast.Node {
     if operator == "println" {
         return println
     }
+    if operator == "fn" {
+        return fn
+    }
     if operator == "add" || operator == "+" {
         return add
     }
@@ -184,4 +187,24 @@ func tail(exprs []ast.Node, env *Environment) ast.Node {
     }
 
     return ast.Number{Value: 0}
+}
+
+func fn(exprs []ast.Node, env *Environment) ast.Node {
+    var function ast.Lambda
+
+    function.Env = *env
+    if t, ok := exprs[0].(ast.Qexpr); ok {
+        for _, elem := range t.Arguments {
+            if ident, ok := elem.(ast.Identifier); ok {
+                function.Env[ident.Literal] = ast.Number{Value: 0}
+                function.Arguments = append(function.Arguments, ident.Literal)
+            }
+        }
+    }
+
+    if t, ok := exprs[1].(ast.Sexpr); ok {
+        function.Body = t
+    }
+
+    return function
 }

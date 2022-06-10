@@ -58,3 +58,21 @@ func (q Qexpr) String() string {
     output += "}"
     return output
 }
+
+type Lambda struct {
+    Body Sexpr
+    Arguments []string
+    Env map[string]Node
+}
+
+func (l Lambda) String() string {
+    output := "(fn ("
+
+    for _, elem := range l.Arguments {
+        output += elem
+        output += " "
+    }
+    output += ") " + l.Body.String() + ")"
+
+    return output
+}

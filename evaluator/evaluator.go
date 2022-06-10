@@ -28,7 +28,16 @@ func evaluateSexpr(expr ast.Sexpr, env *Environment) ast.Node {
     builtin := getBuiltin(expr.Operator)
 
     if builtin == nil {
-        // get function from env
+        sexpr, _ := (*env)[expr.Operator].(ast.Sexpr)
+
+        function, _ := evaluateSexpr(sexpr, env).(ast.Lambda)
+
+        for i, elem := range expr.Arguments {
+            function.Env[function.Arguments[i]] = elem
+        }
+
+        func_env := Environment(function.Env)
+        return evaluateSexpr(function.Body, &func_env)
     }
 
     return builtin(expr.Arguments, env)
