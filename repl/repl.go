@@ -27,5 +27,8 @@ func Repl() {
             fmt.Printf("%s\n", elem.String())
         }
         env = e.GetEnv()
+        for k, v := range env {
+            fmt.Printf("%s: %s\n", k, v.String())
+        }
     }
 }

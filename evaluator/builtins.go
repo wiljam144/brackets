@@ -27,6 +27,9 @@ func getBuiltin(operator string) func([]ast.Node, *Environment) ast.Node {
     if operator == "def" {
         return def
     }
+    if operator == "get" {
+        return get
+    }
     if operator == "if" {
         return _if
     }
@@ -110,6 +113,9 @@ func def(exprs []ast.Node, env *Environment) ast.Node {
 
     if t, ok := exprs[0].(ast.Identifier); ok {
         name = t.Literal
+    }
+    if t, ok := exprs[0].(ast.Sexpr); ok {
+        name = evaluateSexpr(t, env).String()
     }
 
     (*env)[name] = exprs[1]
@@ -207,4 +213,11 @@ func fn(exprs []ast.Node, env *Environment) ast.Node {
     }
 
     return function
+}
+
+func get(exprs []ast.Node, env *Environment) ast.Node {
+    if t, ok := exprs[0].(ast.Identifier); ok {
+        return (*env)[t.Literal]
+    }
+    return ast.Number{Value: 0}
 }
